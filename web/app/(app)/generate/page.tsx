@@ -55,9 +55,8 @@ async function sha256Hex(text: string) {
   return Array.from(h, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Filled in for the demo brand (Levis); the brand can edit it before generating. */
-const DEFAULT_PROMPT =
-  "Wearing a classic blue Levis denim trucker jacket over a plain white t-shirt, smiling, walking down a sunlit city street, natural golden-hour light, lifestyle advertising photo";
+/** A generic starting prompt (no brand or product names); the brand edits it before generating. */
+const DEFAULT_PROMPT = "Smiling in a sunlit café holding a ceramic coffee cup, product shot for a spring campaign";
 
 export default function GeneratePage() {
   return (
