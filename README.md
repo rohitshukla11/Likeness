@@ -254,6 +254,8 @@ flowchart LR
 
 ## Known limitations
 
+- **History over the public RPC.** Creator and licence history is scanned from contract logs over the
+  public Monad RPC and kept current by a scheduled ping ([`keep-history-current.yml`](.github/workflows/keep-history-current.yml)); a hosted Envio indexer is the long-term fix.
 - **Didit level.** The live site runs `VERIFICATION_LEVEL=free`: passive liveness, with the reference
   photos matched on our server. It resists deepfakes and camera injection less well than `full` (active
   liveness and Didit's 1:1 match), which needs Didit credit. The level is recorded on chain and shown.
