@@ -8,7 +8,7 @@
 
 **Live demo:** [likeness.site](https://likeness.site) (Monad testnet) ·
 **Code:** [github.com/rohitshukla11/Likeness](https://github.com/rohitshukla11/Likeness) ·
-**Demo video:** <DEMO_URL> · **Pitch video:** <PITCH_URL>
+**Demo video:** [youtu.be/EQB7X7XGnFo](https://youtu.be/EQB7X7XGnFo) · **Pitch video:** [youtube.com/watch?v=EwHILIUUlgA](https://www.youtube.com/watch?v=EwHILIUUlgA)
 
 Likeness is a likeness-licensing protocol on Monad, with a reference app on top, running on Monad
 testnet. Real, verified adults license their face to brands and AI tools, get paid in USDC for every image
@@ -123,14 +123,13 @@ Roles: attester `0x8d53e13407890e18022bfAa413193ba4C6DCc1a5`; render agent
 
 ## Sponsor integrations
 
-- **Dynamic** ([write-up](docs/dynamic.md)): email sign-in and an embedded wallet for every creator and
-  brand, live on likeness.site. Built behind interfaces and switched on by credentials: the render
-  agent as a Dynamic server wallet (`pnpm agent:dynamic`; a local agent key signs until `DYNAMIC_API_KEY`
-  is set), and **delegated access** so a brand's wallet sends exactly one transaction type,
-  `payRender`, through the render service under a policy and a total cap. Delegated access is
-  sandbox-only without a Dynamic Enterprise plan and is not enabled on the live site.
-- **Mera:** passkey PRF output as encryption key material, never as a wallet. See
-  [Mera: One Passkey, Many Keys](#mera-one-passkey-many-keys) below.
+- **Dynamic** ([write-up and status: docs/dynamic.md](docs/dynamic.md)): email sign-in and an embedded
+  wallet for every creator and brand, live on likeness.site. Also configured on the live site (Dynamic
+  sandbox), not yet exercised in a paid render: the render agent as a Dynamic server wallet, and
+  **delegated access** so a brand's wallet sends exactly one transaction type, `payRender`, through the
+  render service under a policy and a total cap.
+- **Mera** ([write-up and status: docs/mera.md](docs/mera.md)): passkey PRF output as encryption key
+  material, never as a wallet. See [Mera: One Passkey, Many Keys](#mera-one-passkey-many-keys) below.
 - **Envio:** [`indexer/`](indexer) is an Envio HyperIndex for all four contracts (HyperSync with an
   `ENVIO_API_TOKEN`, RPC otherwise). It is not hosted for the live site: there, history comes from the
   contracts' logs over RPC, cached between requests; current state always comes from the contracts.
@@ -261,7 +260,8 @@ flowchart LR
   liveness and Didit's 1:1 match), which needs Didit credit. The level is recorded on chain and shown.
 - **Test C2PA certificate.** Manifests are signed with a locally generated certificate that is not on the
   C2PA trust list; the verifier says so.
-- **Dynamic delegated access is sandbox-only**, so brands confirm each `payRender` in their own wallet.
+- **Dynamic delegated access is sandbox-only** without an Enterprise plan. It is configured on the live
+  site but no brand has delegated yet, so brands so far confirm each `payRender` in their own wallet.
 - **Face detector licence.** The free-level matcher uses the YuNet detector, whose weights are MIT but
   were trained on WIDER FACE (CC BY-NC-ND images). The production replacement is Google's MediaPipe
   BlazeFace (Apache-2.0), which needs converting to ONNX; it is not swapped yet.
@@ -286,8 +286,8 @@ pnpm c2pa:testcert             # once: a TEST C2PA signing chain in ../.secrets/
 pnpm dev                       # http://localhost:3000
 ```
 
-Each credential switches on one feature, and `/status` shows what is configured: Dynamic
-(`NEXT_PUBLIC_DYNAMIC_ENV_ID`), Didit (`DIDIT_API_KEY`, `VERIFICATION_LEVEL`, workflow IDs; the `free`
+Each credential turns on one feature, and `/status` shows what is configured: Dynamic
+(`NEXT_PUBLIC_DYNAMIC_ENV_ID`; delegated access and the agent wallet are in [docs/dynamic.md](docs/dynamic.md#running-it-locally)), Didit (`DIDIT_API_KEY`, `VERIFICATION_LEVEL`, workflow IDs; the `free`
 level also needs `pnpm face:models`), Gemini (`GEMINI_API_KEY`, a billed key) and the MON gas top-up
 (`DRIP_KEY_FILE`).
 

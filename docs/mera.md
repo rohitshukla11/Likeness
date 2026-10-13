@@ -1,10 +1,17 @@
 # How Likeness uses Mera: one passkey, many keys
 
-**Bounty:** Mera, "One Passkey, Many Keys".
+**Bounty:** Mera, "One Passkey, Many Keys". **Video:** [youtu.be/xTEIn8F2gB4](https://youtu.be/xTEIn8F2gB4) · [Back to the README](../README.md)
 
-Likeness uses Mera's WebAuthn PRF output as **encryption key material for a person's face**, never as a
-wallet or a login. The account is a Dynamic embedded wallet; the passkey's only jobs are deriving keys,
-encrypting and releasing. This page describes only what the code does.
+## Status on likeness.site (October 2026)
+
+- Mera's passkey PRF output is used as **encryption key material for a person's face**, never as a
+  wallet or a login (the wallet is Dynamic's).
+- The live namespace is **`likeness:reference`**: it derives the key that seals a creator's reference
+  photos in the browser; the server stores only ciphertext.
+- The **cross-device key test is live** on likeness.site (Become a creator → Details) and passed with
+  the same synced passkey in Safari and Chrome.
+
+The rest of this page describes only what the code does.
 
 ## Namespaces
 
@@ -89,6 +96,8 @@ nothing.
 
 How it was checked:
 
+- **Live on likeness.site, October 2026:** same synced iCloud Keychain passkey in Safari and Chrome →
+  same fingerprint, same ciphertext hash, note decrypted.
 - **Unit tests** ([`crypto.test.ts`](../web/lib/crypto/crypto.test.ts)): a fake authenticator with PRF =
   HMAC(credential secret, rpId ‖ salt), synced to a second instance, gets the same fingerprint and
   decrypts; a different passkey, namespace or rpId fails.
