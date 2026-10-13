@@ -1,6 +1,8 @@
 <p align="center"><img src="docs/brand/likeness-logo-seal.png" alt="Likeness: licensing protocol" width="640"></p>
 
-# Likeness: license your face to AI, on your terms
+# Likeness
+
+**License your face to AI. Your terms, paid per image.**
 
 **Live demo:** [likeness.site](https://likeness.site) (Monad testnet) ·
 **Code:** [github.com/rohitshukla11/Likeness](https://github.com/rohitshukla11/Likeness) ·
@@ -75,6 +77,17 @@ below the image's value and confirmation lands before delivery.
   ([gas pricing](https://docs.monad.xyz/developer-essentials/gas-pricing.md)), so the service sends the
   estimate plus 15%: about **0.043 MON** for a first render and **0.035 MON** after, at the 102 gwei
   testnet gas price measured on 2026-10-06.
+
+## Traction
+
+Likeness won Monad Blitz Pune V3 (10 October 2026) as an early prototype. Since then we've built it into
+a full product, live on Monad testnet: verified onboarding, passkey encryption, licences with USDC escrow,
+real AI renders with content credentials, a public verifier, revocation and refunds, plus creator and
+brand profiles with sample renders.
+
+We've also spoken with creators and brands directly. Creators described the hustle of shoots (travel,
+long days, reshoots) for a one-time fee; brands described delayed content, slipping shoot dates and the
+effort of recreating an ad for every new variation.
 
 ## Contracts on Monad testnet
 
@@ -175,9 +188,6 @@ flowchart LR
   render and anchor receipts through the same contracts.
 - **Customers:** AI ad and avatar tools that need real, consented faces, and the brands that use them.
 - **Go-to-market:** start with AI UGC ad tools and the creators who already make UGC ads.
-- **Demand validation:** we've spoken with creators and brands directly. Creators described the hustle
-  of shoots (travel, long days, reshoots) for a one-time fee; brands described delayed content, slipping
-  shoot dates and the effort of recreating an ad for every new variation.
 
 ## Roadmap
 
@@ -304,9 +314,12 @@ cache and check `/status`.
 
 ## Disclosures
 
-- **Pre-existing code:** the design tokens (colours, type scale, radii) are reused from my earlier
+- **Built in the Metropolis window:** Likeness was built during the Metropolis window, including the
+  prototype that won Monad Blitz Pune V3 on 10 October 2026.
+- **Pre-existing code:** some design tokens (colours, type scale, radii) are reused from my earlier
   project, Whistle.
-- **AI tools:** code written with Claude Code, which I directed and reviewed; images generated with Gemini.
+- **AI tools:** AI coding assistance from Claude Code, directed and reviewed by us; images generated with
+  Gemini.
 - **Dual entry:** An Arbitrum version of Likeness was submitted separately to Colosseum's Crypto World's
   Fair (rohitshukla11/likeness.website, live at likeness.website).
 
