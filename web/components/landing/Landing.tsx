@@ -107,6 +107,9 @@ function Hero() {
       </div>
 
       <div className="relative mx-auto flex max-w-[1180px] flex-wrap items-center justify-center gap-x-[clamp(24px,4.4vw,64px)] gap-y-3 px-4 pb-8 pt-12 text-[clamp(15px,1.4vw,18px)] font-semibold text-[#5F636B] sm:px-8">
+        <span className="flex w-full justify-center">
+          <span className="inline-flex items-center rounded-full bg-violet px-3 py-1 text-[12px] font-semibold tracking-[0.01em] text-white">Winner · Monad Blitz Pune V3</span>
+        </span>
         <span className="text-[13px] font-medium text-[#5F636B]">Built on</span>
         {BUILT_ON.map((b) => (
           <span key={b}>{b}</span>

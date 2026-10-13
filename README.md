@@ -4,6 +4,8 @@
 
 **License your face to AI. Your terms, paid per image.**
 
+> 🏆 **Winner, Monad Blitz Pune V3** (10 October 2026)
+
 **Live demo:** [likeness.site](https://likeness.site) (Monad testnet) ·
 **Code:** [github.com/rohitshukla11/Likeness](https://github.com/rohitshukla11/Likeness) ·
 **Demo video:** <DEMO_URL> · **Pitch video:** <PITCH_URL>
@@ -80,8 +82,8 @@ below the image's value and confirmation lands before delivery.
 
 ## Traction
 
-Likeness won Monad Blitz Pune V3 (10 October 2026) as an early prototype. Since then we've built it into
-a full product, live on Monad testnet: verified onboarding, passkey encryption, licences with USDC escrow,
+The Blitz entry was an early prototype. Since then we've built Likeness into a full product, live on
+Monad testnet: verified onboarding, passkey encryption, licences with USDC escrow,
 real AI renders with content credentials, a public verifier, revocation and refunds, plus creator and
 brand profiles with sample renders.
 
