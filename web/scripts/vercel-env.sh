@@ -1,11 +1,12 @@
 #!/bin/sh
 # Copy this machine's configuration to the linked Vercel project (Production): public settings and
-# API keys from web/.env.local, signing keys and the C2PA chain from ../.secrets. Values are read from
-# the files and piped to the Vercel CLI; none is printed.
+# API keys from web/.env.local, signing keys and the C2PA chain from the secrets folder (default
+# ../.secrets). Values are read from the files and piped to the Vercel CLI; none is printed.
 #
 #   cd web && npx vercel login && npx vercel link     # once, in your own terminal
 #   sh scripts/vercel-env.sh https://www.likeness.site
 #
+# Before writing anything it shows the linked project's name and asks you to type it back.
 # Then redeploy without the build cache (NEXT_PUBLIC_* values are compiled into the page).
 set -eu
 URL="${1:?usage: sh scripts/vercel-env.sh https://your-domain}"
@@ -14,7 +15,19 @@ HOST="$(printf '%s' "$URL" | sed -E 's#^https?://##; s#/.*$##')"
 RP_ID="$(printf '%s' "$HOST" | sed -E 's#^www\.##')"
 VERCEL="npx --yes vercel@63.1.2"
 [ -f .env.local ] || { echo "run from web/ (no .env.local here)"; exit 1; }
-[ -d .vercel ] || { echo "not linked: run 'npx vercel link' in web/ first"; exit 1; }
+[ -f .vercel/project.json ] || { echo "not linked: run 'npx vercel link' in web/ first"; exit 1; }
+SECRETS="${SECRETS_DIR:-../.secrets}"
+[ -d "$SECRETS" ] || { echo "no secrets folder at $SECRETS"; exit 1; }
+
+# Which project is this? Show it and ask, so nothing is written to the wrong one.
+PROJECT="$(sed -nE 's/.*"projectName" *: *"([^"]*)".*/\1/p' .vercel/project.json)"
+PROJECT_ID="$(sed -nE 's/.*"projectId" *: *"([^"]*)".*/\1/p' .vercel/project.json)"
+echo "Linked Vercel project: ${PROJECT:-(name not recorded)}  (id ${PROJECT_ID:-unknown})"
+echo "Site URL:              https://$HOST   (passkey RP ID: $RP_ID)"
+echo "Secrets folder:        $(cd "$SECRETS" && pwd)"
+printf "Write the Production environment variables to this project? Type the project name to confirm: "
+read -r ANSWER < /dev/tty
+if [ -z "$PROJECT" ] || [ "$ANSWER" != "$PROJECT" ]; then echo "Not confirmed; nothing was written."; exit 1; fi
 
 local_value() { grep -E "^$1=" .env.local | tail -1 | cut -d= -f2- || true; }
 
@@ -37,11 +50,11 @@ set_value NEXT_PUBLIC_MONAD_RPC_URL "$(local_value NEXT_PUBLIC_MONAD_RPC_URL)"
 set_value STORE_DRIVER blob
 
 # Server signing keys and the C2PA chain, from ../.secrets
-set_file ATTESTER_PRIVATE_KEY ../.secrets/attester.key
-set_file RENDER_AGENT_PRIVATE_KEY ../.secrets/render-agent.key
-set_file DRIP_PRIVATE_KEY ../.secrets/drip.key
-set_file C2PA_CERT_PEM ../.secrets/c2pa/signer.pem
-set_file C2PA_KEY_PEM ../.secrets/c2pa/signer.key
+set_file ATTESTER_PRIVATE_KEY "$SECRETS/attester.key"
+set_file RENDER_AGENT_PRIVATE_KEY "$SECRETS/render-agent.key"
+set_file DRIP_PRIVATE_KEY "$SECRETS/drip.key"
+set_file C2PA_CERT_PEM "$SECRETS/c2pa/signer.pem"
+set_file C2PA_KEY_PEM "$SECRETS/c2pa/signer.key"
 
 # Integrations and settings, from .env.local
 for name in DIDIT_API_KEY GEMINI_API_KEY MONAD_RPC_URL DYNAMIC_API_KEY DYNAMIC_WEBHOOK_SECRET DIDIT_WEBHOOK_SECRET; do
