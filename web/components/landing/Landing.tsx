@@ -423,9 +423,9 @@ function Quotes() {
         <div className="px-4 sm:px-8">
           <div className={`${c("rv")} relative mx-auto flex max-w-[1116px] flex-wrap items-center justify-between gap-5 overflow-hidden rounded-[24px] bg-lime bg-[url(/landing/card-lime.png)] bg-cover bg-center px-[30px] py-[26px]`}>
             <h2 className="m-0 font-display text-[clamp(18px,2.2vw,24px)] font-extrabold leading-[1.25]">
-              READY TO LICENSE YOUR FACE
+              LICENSE YOUR FACE TO AI.
               <br />
-              ON YOUR TERMS?
+              YOUR TERMS, PAID PER IMAGE.
             </h2>
             <span className="flex items-center gap-4">
               <span aria-hidden="true" className="hidden sm:flex">

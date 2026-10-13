@@ -7,9 +7,15 @@ import { Providers } from "./providers";
 const display = Unbounded({ subsets: ["latin"], weight: ["700", "800", "900"], variable: "--font-display-face", display: "swap" });
 const body = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-body-face", display: "swap" });
 
+const TAGLINE = "License your face to AI. Your terms, paid per image.";
+const DESCRIPTION = `${TAGLINE} Verified creators set the terms, brands pay per render from USDC escrow, and either side can revoke. Testnet demo on Monad.`;
+
 export const metadata: Metadata = {
-  title: { default: "Likeness: license your face to AI", template: "%s · Likeness" },
-  description: "Licence your face to AI, on your terms, and pull it back any time. A likeness-licensing protocol on Monad.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://likeness.site"),
+  title: { default: `Likeness: ${TAGLINE}`, template: "%s · Likeness" },
+  description: DESCRIPTION,
+  openGraph: { type: "website", siteName: "Likeness", title: `Likeness: ${TAGLINE}`, description: DESCRIPTION },
+  twitter: { card: "summary", title: `Likeness: ${TAGLINE}`, description: DESCRIPTION },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
