@@ -35,4 +35,7 @@ contracts/broadcast/*/*/run-[0-9]*.json
 demo-renders/
 
 # project notes and screenshots: kept locally, not in the repository
-docs/
+docs/*
+!docs/brand/
+!docs/dynamic.md
+!docs/mera.md
