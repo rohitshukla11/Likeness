@@ -55,6 +55,10 @@ set_file RENDER_AGENT_PRIVATE_KEY "$SECRETS/render-agent.key"
 set_file DRIP_PRIVATE_KEY "$SECRETS/drip.key"
 set_file C2PA_CERT_PEM "$SECRETS/c2pa/signer.pem"
 set_file C2PA_KEY_PEM "$SECRETS/c2pa/signer.key"
+# Dynamic delegated access (RSA key whose public half is registered in Dynamic) and the render agent's
+# server wallet (written by pnpm agent:dynamic); skipped until the files exist
+set_file DYNAMIC_DELEGATION_PRIVATE_KEY_PEM "$SECRETS/dynamic-delegation.pem"
+set_file DYNAMIC_AGENT_JSON "$SECRETS/dynamic-agent.json"
 
 # Integrations and settings, from .env.local
 for name in DIDIT_API_KEY GEMINI_API_KEY MONAD_RPC_URL DYNAMIC_API_KEY DYNAMIC_WEBHOOK_SECRET DIDIT_WEBHOOK_SECRET; do
