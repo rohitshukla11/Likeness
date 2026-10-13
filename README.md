@@ -129,14 +129,27 @@ Roles: attester `0x8d53e13407890e18022bfAa413193ba4C6DCc1a5`; render agent
   is set), and **delegated access** so a brand's wallet sends exactly one transaction type,
   `payRender`, through the render service under a policy and a total cap. Delegated access is
   sandbox-only without a Dynamic Enterprise plan and is not enabled on the live site.
-- **Mera** ([write-up](docs/mera.md)): passkey PRF output as encryption key material, never as a wallet.
-  The creator's photos are encrypted under the `likeness:reference` namespace; approving a licence
-  re-wraps the data key under a per-licence namespace; a per-brand namespace derives an unlinkable
-  identity. A synced second device re-derives the same keys: the cross-device test is automated in
-  [`crypto.test.ts`](web/lib/crypto/crypto.test.ts).
+- **Mera:** passkey PRF output as encryption key material, never as a wallet. See
+  [Mera: One Passkey, Many Keys](#mera-one-passkey-many-keys) below.
 - **Envio:** [`indexer/`](indexer) is an Envio HyperIndex for all four contracts (HyperSync with an
   `ENVIO_API_TOKEN`, RPC otherwise). It is not hosted for the live site: there, history comes from the
   contracts' logs over RPC, cached between requests; current state always comes from the contracts.
+
+## Mera: One Passkey, Many Keys
+
+Likeness uses Mera's WebAuthn PRF output to encrypt a person's face, not to sign in or hold funds (the
+wallet is Dynamic's). Each purpose has its own PRF salt namespace, and each key comes from HKDF-SHA256
+under its own label:
+
+- **`likeness:reference`** derives the key that wraps the creator's photo data key (AES-256-GCM,
+  non-extractable). The photos are sealed in the browser; the server stores only ciphertext.
+- **`likeness:licence:<id>`** derives a separate key per licence, used when the creator releases their
+  photos to the render service for that licence.
+
+**Cross-device key test** (Become a creator → Details): the same passkey in another browser shows the
+same key fingerprint and decrypts the same stored note; the panel shows the server holds only
+ciphertext (size and hash). Photos are decrypted on the server in memory for one render and dropped;
+there is no TEE yet. Full details and limits: [docs/mera.md](docs/mera.md).
 
 ## Architecture
 
@@ -215,8 +228,9 @@ flowchart LR
 
 - **Only ciphertext is stored.** Reference photos are encrypted in the creator's browser (AES-256-GCM)
   under a key derived from their passkey through Mera. The server stores ciphertext and hashes, and the
-  chain holds only a hash of the encrypted manifest and of the Didit session ID. Keys and plaintext live
-  in memory for one operation and are zeroed afterwards.
+  chain holds only a hash of the encrypted manifest and of the Didit session ID. Passkey-derived keys
+  never leave the browser. The server decrypts photos in memory for one render and zeroes them
+  afterwards ([what the server sees](docs/mera.md#what-the-server-sees-in-plaintext)).
 - **What Didit sees, and for how long.** Didit sees the ID document and the liveness selfie, and at the
   `full` level matches the three reference photos. Likeness calls those photo matches with
   `save_api_request=false`, and deletes the session with `privacy_erasure` as soon as the attestation is
